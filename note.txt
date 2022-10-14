@@ -1,0 +1,22 @@
+1. 	app.get('/') 會render index.ejs 並且將 req.user 輸入view的變數user
+
+2.	index.ejs判斷user是否有值, 有的話呈現登入後畫面, 否的話呈現form
+
+3-1. 	如呈現form畫面, 則可讓client輸入使用者資訊
+3-2. 	如呈現登入後畫面, 表示已在後端判斷完登入者資訊
+
+4-1. 	app.post('/log-in') 呼叫passport.authenticate('local', {
+		// successRedirect: "/",
+    		//failureRedirect: "/"
+	}) ;
+4-2. 	client 按下LOG OUT後, app.post('log-out') 且執行req.logout()
+		//此req.logout為passport的middleware所加, 會將req.user清除
+	最後, 跳轉到3-1. 
+
+5-1. 	passport.authenticate() 會呼叫 passport.use() 
+	passport.use()會比較user.password 和 password是否相同
+		//user.password 是從 mongodb 裡面找尋相同 username 的資料然後回傳
+	當password相同時，passport 的 middelware 會將 req.user 存入 user 資訊，並存入cookie，
+	這樣後端可以隨時取用此使用者資訊 (req.user)
+
+6-1. 登入後會跳轉到3-2.
